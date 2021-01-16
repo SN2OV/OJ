@@ -55,3 +55,17 @@ fun binarySearch(array: IntArray, target: Int): Int {
     }
     return -1
 }
+
+fun printArray(array: IntArray) {
+    array.forEach {
+        print("$it ")
+    }
+}
+
+fun printListNode(listNode: ListNode?) {
+    var p = listNode
+    while (p != null) {
+        print("${p.`val`}")
+        p = p.next
+    }
+}
