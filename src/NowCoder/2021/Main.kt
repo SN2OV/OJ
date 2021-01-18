@@ -29,6 +29,24 @@ fun main(args: Array<String>) {
     listNode4.next = listNode5
 
     listNode4.next = listNode5
-    printListNode(nowcoder2140.mergeTwoLists(listNode, listNode2))
+    //printListNode(nowcoder2140.mergeTwoLists(listNode, listNode2))
 
+    val treeNodeA = TreeNode(1)
+    var treeNodeB = TreeNode(1)
+    val treeNode2 = TreeNode(2)
+    val treeNode3 = TreeNode(3)
+    val treeNode4 = TreeNode(4)
+    val treeNode5 = TreeNode(5)
+    val treeNode6 = TreeNode(6)
+    val treeNode7 = TreeNode(2)
+    treeNodeA.left = treeNode2
+    treeNode2.left = treeNode3
+    treeNodeA.right = treeNode4
+    treeNode4.left = treeNode5
+
+    treeNodeB.left = treeNode7
+    treeNode7.left = treeNode6
+    treeNodeB.right = treeNode4
+    treeNode4.left = treeNode5
+    nowcoder2140.mirrorTree(treeNodeA)
 }

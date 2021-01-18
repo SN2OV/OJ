@@ -69,3 +69,14 @@ fun printListNode(listNode: ListNode?) {
         p = p.next
     }
 }
+
+fun isSameTree(A: TreeNode?, B: TreeNode?): Boolean {
+    if ((A == null && B != null) || (A != null && B == null)) {
+        return false
+    }
+    // 别忘记这句
+    if (A == null && B == null) {
+        return true
+    }
+    return (A?.`val` == B?.`val`) && isSameTree(A?.left, B?.left) && isSameTree(A?.right, B?.right)
+}

@@ -113,4 +113,71 @@ class NowCoder21_40 {
         return newNode
     }
 
+    /**
+     * 剑指 Offer 26. 树的子结构
+     *输入两棵二叉树A和B，判断B是不是A的子结构。(约定空树不是任意一个树的子结构)
+
+        B是A的子结构， 即 A中有出现和B相同的结构和节点值。
+        例如:
+        给定的树 A:
+
+             3
+            / \
+           4   5
+          / \
+         1   2
+        给定的树 B：
+
+           4 
+          /
+         1
+        返回 true，因为 B 与 A 的一个子树拥有相同的结构和节点值。
+     */
+
+    fun isSubStructure(A: TreeNode?, B: TreeNode?): Boolean {
+        return (A != null && B != null) && (recur(A, B) || isSubStructure(A.left, B) || isSubStructure(A.right, B))
+    }
+
+    // 判断A是否包含B,第一次写的时候recur写成了判断树是否相同，区别就是B==null也可以return true，相同则return false
+    fun recur(A: TreeNode?, B: TreeNode?): Boolean {
+        if (B == null) {
+            return true
+        }
+        if (A == null || A?.`val` != B?.`val`) {
+            return false
+        }
+        return recur(A.left, B) && recur(A.right, B)
+    }
+
+    /**
+     * 剑指 Offer 27. 二叉树的镜像
+     *
+     */
+
+    fun mirrorTree(root: TreeNode?): TreeNode? {
+        if (root == null) {
+            return root
+        }
+        val temp = root.left
+        root.left = root.right
+        root.right = temp
+        mirrorTree(root.left)
+        mirrorTree(root.right)
+        return root
+    }
+
+    /**
+     * 剑指 Offer 28. 对称的二叉树
+     */
+    fun isSymmetric(root: TreeNode?): Boolean {
+        return isSymmetric(root?.left, root?.right)
+    }
+
+    fun isSymmetric(treeA: TreeNode?, treeB: TreeNode?): Boolean {
+        if (treeA == null && treeB == null) {
+            return true
+        }
+        return false
+    }
+
 }
