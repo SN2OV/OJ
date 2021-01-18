@@ -1,5 +1,7 @@
 package NowCoder.`2021`
 
+import kotlin.math.min
+
 class NowCoder21_40 {
 
     /**
@@ -177,7 +179,101 @@ class NowCoder21_40 {
         if (treeA == null && treeB == null) {
             return true
         }
-        return false
+        if (treeA == null || treeB == null) {
+            return false
+        }
+        return treeA.`val` == treeB.`val` && isSymmetric(treeA.left, treeB.right) && isSymmetric(treeA.right, treeB.left)
+    }
+
+    /**
+     * 剑指 Offer 29. 顺时针打印矩阵
+     * 输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字。
+
+        示例 1：
+        输入：matrix = [[1,2,3],[4,5,6],[7,8,9]]
+        输出：[1,2,3,6,9,8,7,4,5]
+
+        示例 2：
+        输入：matrix = [[1,2,3,4],[5,6,7,8],[9,10,11,12]]
+        输出：[1,2,3,4,8,12,11,10,9,5,6,7]
+     *
+     */
+
+    // 部分case没通过
+    fun spiralOrder(matrix: Array<IntArray>) {
+        if (matrix.isEmpty()) {
+            return
+        }
+        val raw = matrix.size - 1
+        val column = matrix[0].size - 1
+        val min = min(raw, column)
+        var start = 0
+        while (start * 2 < min) {
+            for (j in start until column - start) {
+                print("${matrix[start][j]} ")
+            }
+            for (i in start until raw - start) {
+                print("${matrix[i][column - start]} ")
+            }
+            for (j in column - start downTo start + 1) {
+                print("${matrix[raw - start][j]} ")
+            }
+            for (i in raw - start downTo start + 1) {
+                print("${matrix[i][start]} ")
+            }
+            start++
+        }
+        start --
+        if (raw > column) {
+            for (i in start + 1 until raw - start) {
+                print("${matrix[i][start + 1]} ")
+            }
+        } else if (raw < column) {
+            for (j in start + 1 until column - start) {
+                print("${matrix[start + 1][j]} ")
+            }
+        } else if (raw % 2 == 0) {
+            print("${matrix[start + 1][start + 1]} ")
+        }
+    }
+
+    fun spiralOrder2(matrix: Array<IntArray>): IntArray {
+        if (matrix.isEmpty()) {
+            return intArrayOf()
+        }
+        val raw = matrix.size - 1
+        val column = matrix[0].size - 1
+        val min = min(raw, column)
+        var start = 0
+        val arrayList = arrayListOf<Int>()
+        while (start * 2 < min) {
+            for (j in start until column - start) {
+                arrayList.add(matrix[start][j])
+            }
+            for (i in start until raw - start) {
+                arrayList.add(matrix[i][column - start])
+            }
+            for (j in column - start downTo start + 1) {
+                arrayList.add(matrix[raw - start][j])
+            }
+            for (i in raw - start downTo start + 1) {
+                arrayList.add(matrix[i][start])
+            }
+            start++
+        }
+        start --
+        if (raw > column) {
+            for (i in start + 1 until raw - start) {
+                arrayList.add(matrix[i][start + 1])
+            }
+        } else if (raw < column) {
+            for (j in start + 1 until column - start) {
+                arrayList.add(matrix[start + 1][j])
+            }
+        } else if (raw % 2 == 0) {
+            arrayList.add(matrix[start + 1][start + 1])
+        }
+        return arrayList.toIntArray()
     }
 
 }

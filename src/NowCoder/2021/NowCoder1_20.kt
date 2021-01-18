@@ -1,10 +1,10 @@
 package NowCoder.`2021`
 
-import java.lang.StringBuilder
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.collections.HashSet
+import kotlin.math.absoluteValue
+
 
 /**
  * Created by fan on 21-1-14
@@ -135,12 +135,12 @@ class NowCoder1_20 {
      * }
      */
 
-    fun reversePrint(head: ListNode<Int>): IntArray {
+    fun reversePrint(head: ListNode): IntArray {
         val stack = Stack<Int>()
         var p = head.next
-        stack.add(head.value)
+        stack.add(head.`val`)
         while (p != null) {
-            stack.add(p.value)
+            stack.add(p.`val`)
             p = p.next
         }
         val intArray = mutableListOf<Int>()
@@ -151,12 +151,12 @@ class NowCoder1_20 {
     }
 
     // 递归回溯
-    fun reversePrint2(head: ListNode<Int>?) {
+    fun reversePrint2(head: ListNode?) {
         if (head == null) {
             return
         }
         reversePrint2(head.next)
-        print(head.value)
+        print(head.`val`)
     }
 
     /**
@@ -257,23 +257,326 @@ class NowCoder1_20 {
     fun minArray(numbers: IntArray): Int {
         var low = 0
         var high = numbers.size - 1
-        var mid = 0
         while (low <= high) {
-            mid = (low + high) / 2
-            if (mid == 0) {
-                return numbers[0]
-            }
-            if (numbers[mid] < numbers[mid + 1] && numbers[mid - 1] > numbers[mid + 1]) {
-                return numbers[mid]
-            } else if (numbers[mid] < numbers[mid + 1] && numbers[mid] > numbers[mid - 1] ) {
-                high = mid - 1
-            } else {
+            val mid = (low + high) / 2
+            if (numbers[mid] < numbers[high]) {
+                high = mid
+            } else if (numbers[mid] > numbers[high]) {
                 low = mid + 1
+            } else {
+                var min = numbers[mid]
+                for (index in low..high) {
+                    if (numbers[index] < min) {
+                        min = numbers[index]
+                    }
+                }
+                return min
             }
         }
-        return -1
+        return numbers[0]
     }
 
+    /**
+     * 剑指 Offer 12. 矩阵中的路径
+     *
+         * 请设计一个函数，用来判断在一个矩阵中是否存在一条包含某字符串所有字符的路径。路径可以从矩阵中的任意一格开始，每一步可以在矩阵中向左、右、上、下移动一格。如果一条路径经过了矩阵的某一格，那么该路径不能再次进入该格子。例如，在下面的3×4的矩阵中包含一条字符串“bfce”的路径（路径中的字母用加粗标出）。
+
+        [["a","b","c","e"],
+        ["s","f","c","s"],
+        ["a","d","e","e"]]
+
+        但矩阵中不包含字符串“abfb”的路径，因为字符串的第一个字符b占据了矩阵中的第一行第二个格子之后，路径不能再次进入这个格子。
+
+        示例 1：
+        输入：board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCCED"
+        输出：true
+
+        示例 2：
+        输入：board = [["a","b"],["c","d"]], word = "abcd"
+        输出：false
+     *
+     */
+
+    fun exist(board: Array<CharArray>, word: String): Boolean {
+        val column = board[0].size
+        val raw = board.size
+        for (rIndex in 0 until raw){
+            for (cIndex in 0 until  column) {
+                if (checkPath(rIndex, cIndex, board, word, 0)) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
+    // rIndex为横坐标
+    private fun checkPath(rIndex: Int, cIndex: Int, board: Array<CharArray>, word: String, index: Int): Boolean {
+        if (index == word.length) {
+            return true
+        }
+        if (rIndex < 0 || rIndex >= board.size || cIndex < 0 || cIndex >= board[0].size || board[rIndex][cIndex] != word[index]) {
+            return false
+        }
+        board[rIndex][cIndex] = ' '
+        val result = checkPath(rIndex + 1, cIndex, board, word, index + 1) ||
+                checkPath(rIndex - 1, cIndex, board, word, index + 1) ||
+                checkPath(rIndex, cIndex + 1, board, word, index + 1) ||
+                checkPath(rIndex, cIndex - 1, board, word, index + 1)
+        board[rIndex][cIndex] = word[index]
+        return result
+    }
+
+    /**
+     * 剑指 Offer 13. 机器人的运动范围
+     * 地上有一个m行n列的方格，从坐标 [0,0] 到坐标 [m-1,n-1] 。一个机器人从坐标 [0, 0] 的格子开始移动，它每次可以向左、右、上、下移动一格（不能移动到方格外），
+     * 也不能进入行坐标和列坐标的数位之和大于k的格子。例如，当k为18时，机器人能够进入方格 [35, 37] ，因为3+5+3+7=18。但它不能进入方格 [35, 38]，因为3+5+3+8=19。请问该机器人能够到达多少个格子？
+     *
+     *  示例 1：
+        输入：m = 2, n = 3, k = 1
+        输出：3
+        示例 2：
+
+        输入：m = 3, n = 1, k = 0
+        输出：1
+     *
+     */
+    fun movingCount(m: Int, n: Int, k: Int): Int {
+        return 0
+    }
+
+    /**
+     * 剑指 Offer 14- I. 剪绳子
+     *  给你一根长度为 n 的绳子，请把绳子剪成整数长度的 m 段（m、n都是整数，n>1并且m>1），每段绳子的长度记为 k[0],k[1]...k[m-1] 。
+     *  请问 k[0]*k[1]*...*k[m-1] 可能的最大乘积是多少？例如，当绳子的长度是8时，我们把它剪成长度分别为2、3、3的三段，此时得到的最大乘积是18。
+
+        示例 1：
+        输入: 2
+        输出: 1
+        解释: 2 = 1 + 1, 1 × 1 = 1
+
+        示例 2:
+        输入: 10
+        输出: 36
+        解释: 10 = 3 + 3 + 4, 3 × 3 × 4 = 36
+     */
+
+    fun cuttingRope(n: Int): Int {
+        return 0
+    }
+
+    /**
+     * 剑指 Offer 15. 二进制中1的个数
+     *  请实现一个函数，输入一个整数（以二进制串形式），输出该数二进制表示中 1 的个数。例如，把 9 表示成二进制是 1001，有 2 位是 1。因此，如果输入 9，则该函数输出 2。
+     */
+    fun hammingWeight(n: Int): Int {
+        var number = n
+        var count = 0
+        while (number != 0) {
+            count += (number and 1)
+            // ushr为无符号右移
+            number = number ushr 1
+        }
+        return count
+    }
+
+    fun hammingWeight2(n: Int): Int {
+        var number = n
+        var count = 0
+        while (number != 0) {
+            count ++
+            number = number and (number - 1)
+        }
+        return count
+    }
+
+    /**
+     * 剑指 Offer 16. 数值的整数次方
+     * 实现函数double Power(double base, int exponent)，求base的exponent次方。不得使用库函数，同时不需要考虑大数问题。
+     */
+    fun myPow(x: Double, n: Int): Double {
+        if (x == 0.0) {
+            return 0.0
+        }
+        var num = x
+        var power: Long = n.toLong()
+        var result = 1.0
+        if (n < 0) {
+            num = 1 / num
+            power *= (-1)
+        }
+        while (power > 0) {
+            if (power.toInt() and 1 == 1) {
+                result *= num
+            }
+            num *= num
+            power = power shr 1
+        }
+        return result
+    }
+
+    /**
+     * 剑指 Offer 17. 打印从1到最大的n位数
+     *输入数字 n，按顺序打印出从 1 到最大的 n 位十进制数。比如输入 3，则打印出 1、2、3 一直到最大的 3 位数 999。
+        示例 1:
+        输入: n = 1
+        输出: [1,2,3,4,5,6,7,8,9]
+
+        说明：
+        用返回一个整数列表来代替打印
+        n 为正整数
+     */
+
+    fun printNumbers(n: Int): IntArray {
+        return intArrayOf()
+    }
+
+    /**
+     * 剑指 Offer 18. 删除链表的节点
+     * 给定单向链表的头指针和一个要删除的节点的值，定义一个函数删除该节点。
+       返回删除后的链表的头节点。
+     */
+
+    fun deleteNode(head: ListNode?, `val`: Int): ListNode? {
+        val pHead = head
+        var cur = head
+        var pre: ListNode? = null
+        if (head?.`val` == `val`) {
+            return head.next
+        }
+        while (cur != null) {
+            if (cur.`val` == `val`) {
+                pre?.next = cur.next
+                return pHead
+            }
+            pre = cur
+            cur = cur.next
+        }
+        return pHead
+    }
+
+    /**
+     * 剑指 Offer 19. 正则表达式匹配
+     *
+     *  请实现一个函数用来匹配包含'. '和'*'的正则表达式。模式中的字符'.'表示任意一个字符，而'*'表示它前面的字符可以出现任意次（含0次）。在本题中，匹配是指字符串的所有字符匹配整个模式。例如，字符串"aaa"与模式"a.a"和"ab*ac*a"匹配，但与"aa.a"和"ab*a"均不匹配。
+
+        示例 1:
+        输入:
+        s = "aa"
+        p = "a"
+        输出: false
+        解释: "a" 无法匹配 "aa" 整个字符串。
+
+        示例 2:
+        输入:
+        s = "aa"
+        p = "a*"
+        输出: true
+        解释: 因为 '*' 代表可以匹配零个或多个前面的那一个元素, 在这里前面的元素就是 'a'。因此，字符串 "aa" 可被视为 'a' 重复了一次。
+
+        示例 3:
+        输入:
+        s = "ab"
+        p = ".*"
+        输出: true
+        解释: ".*" 表示可匹配零个或多个（'*'）任意字符（'.'）。
+
+        示例 4:
+        输入:
+        s = "aab"
+        p = "c*a*b"
+        输出: true
+        解释: 因为 '*' 表示零个或多个，这里 'c' 为 0 个, 'a' 被重复一次。因此可以匹配字符串 "aab"。
+
+        示例 5:
+        输入:
+        s = "mississippi"
+        p = "mis*is*p*."
+        输出: false
+        s 可能为空，且只包含从 a-z 的小写字母。
+        p 可能为空，且只包含从 a-z 的小写字母以及字符 . 和 *，无连续的 '*'。
+
+     *
+     */
+
+
+    /**
+     * 剑指 Offer 20. 表示数值的字符串
+     *  请实现一个函数用来判断字符串是否表示数值（包括整数和小数）。例如，字符串"+100"、"5e2"、"-123"、"3.1416"、"-1E-16"、
+     *  "0123"都表示数值，但"12e"、"1a3.14"、"1.2.3"、"+-5"及"12e+5.4"都不是。
+     */
+
+    // 没有跑过全部case
+    fun isNumber(s: String): Boolean {
+        val str = s.trim()
+        if (str.isEmpty()) {
+            return false
+        }
+        if (str.contains('e') || str.contains('E')) {
+            val arr = str.split('e')
+            val arr2 = str.split('E')
+            if (arr.size == 2 && isInteger(arr[0]) && isInteger(arr[1])) {
+                return true
+            }
+            if (arr2.size == 2 && isInteger(arr2[0]) && isInteger(arr2[1])) {
+                return true
+            }
+        }
+        if (str.contains('.')) {
+            val arr = s.split('.')
+            return (arr.size == 2 && isInteger(arr[0]) && isInteger(arr[1]) && arr[1].length > 0 && arr[1][0] != '+' && arr[1][0] != '-')
+        }
+        return isNumberWithoutE(str)
+    }
+
+    fun isNumberWithoutE(s: String): Boolean {
+        var hasDot = false
+        for (index in s.indices) {
+            val curChar = s[index]
+            if (curChar == '.') {
+                if (hasDot) {
+                    return false
+                } else {
+                    hasDot = true
+                }
+            }
+            if ((curChar != '+' && curChar != '-' && curChar != '.') && !curChar.isDigit()) {
+                return false
+            }
+            if ((curChar == '+' || curChar == '-')) {
+                if (index > 0) {
+                    return false
+                } else {
+                    continue
+                }
+            }
+        }
+        return true
+    }
+
+    fun Char.isDigit(): Boolean {
+        return this in '0'..'9'
+    }
+
+    fun isInteger(s: String): Boolean {
+        if (s.isEmpty()) {
+            return false
+        }
+        for (index in s.indices) {
+            val curChar = s[index]
+            if ((curChar != '+' && curChar != '-') && !curChar.isDigit()) {
+                return false
+            }
+            if ((curChar == '+' || curChar == '-')) {
+                if (index > 0) {
+                    return false
+                } else {
+                    continue
+                }
+            }
+        }
+        return true
+    }
 
 }
 
@@ -305,5 +608,4 @@ class NowCoder1_20 {
                 -1
             }
         }
-
     }

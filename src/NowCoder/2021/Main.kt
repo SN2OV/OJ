@@ -12,6 +12,10 @@ fun main(args: Array<String>) {
     val intArray3 = intArrayOf(3, 6, 9, 16, 22)
     val intArray4 = intArrayOf(10, 13, 14, 17, 24)
     val intArray5 = intArrayOf(18, 21, 23, 26, 30)
+    val intArray6 = intArrayOf(1, 2)
+    val intArray7 = intArrayOf(5, 6)
+    val intArray8 = intArrayOf(9, 10)
+    val intArray9 = intArrayOf(13, 14, 15, 16)
     val arrays = arrayListOf(intArray, intArray2, intArray3, intArray4, intArray5)
 //    print(nowcoder.findNumberIn2DArray(arrayListOf(), 21))
 
@@ -28,7 +32,6 @@ fun main(args: Array<String>) {
     listNode3.next = listNode4
     listNode4.next = listNode5
 
-    listNode4.next = listNode5
     //printListNode(nowcoder2140.mergeTwoLists(listNode, listNode2))
 
     val treeNodeA = TreeNode(1)
@@ -44,9 +47,20 @@ fun main(args: Array<String>) {
     treeNodeA.right = treeNode4
     treeNode4.left = treeNode5
 
-    treeNodeB.left = treeNode7
-    treeNode7.left = treeNode6
-    treeNodeB.right = treeNode4
-    treeNode4.left = treeNode5
-    nowcoder2140.mirrorTree(treeNodeA)
+    treeNodeB.left = treeNode4
+    treeNode4.right = treeNode6
+    treeNodeB.right = treeNode2
+    treeNode2.right = treeNode3
+    // print(nowcoder2140.isSymmetric(treeNodeA, treeNodeB))
+    val charArray = charArrayOf('a', 'b', 'c', 'e')
+    val charArray2 = charArrayOf('s', 'f', 'e', 's')
+    val charArray3 = charArrayOf('a', 'd', 'e', 'e')
+    val board = arrayOf(charArray, charArray2, charArray3)
+    // print(nowcoder.exist(board, "abceseefs"))
+    // print(nowcoder.hammingWeight2(15))
+
+    // print(nowcoder.myPow(2.0, 5))
+//    print(nowcoder2140.spiralOrder(arrayOf(intArray6, intArray7, intArray8)))
+
+    nowcoder2140.spiralOrder(arrayOf(intArray6, intArray7, intArray8))
 }
