@@ -1,5 +1,6 @@
 package NowCoder.`2021`
 
+import java.util.*
 import kotlin.math.min
 
 class NowCoder21_40 {
@@ -274,6 +275,69 @@ class NowCoder21_40 {
             arrayList.add(matrix[start + 1][start + 1])
         }
         return arrayList.toIntArray()
+    }
+
+    /**
+     * 剑指 Offer 31. 栈的压入、弹出序列
+     *  输入两个整数序列，第一个序列表示栈的压入顺序，请判断第二个序列是否为该栈的弹出顺序。假设压入栈的所有数字均不相等。
+     *  例如，序列 {1,2,3,4,5} 是某栈的压栈序列，序列 {4,5,3,2,1} 是该压栈序列对应的一个弹出序列，但 {4,3,5,1,2} 就不可能是该压栈序列的弹出序列。
+     */
+    fun validateStackSequences(pushed: IntArray, popped: IntArray): Boolean {
+        val stack = Stack<Int>()
+        var pushPointer = 0
+        for (popIndex in popped.indices) {
+            if (stack.isNotEmpty() && stack.peek() == popped[popIndex]) {
+                stack.pop()
+                continue
+            }
+            for (pushIndex in pushPointer until pushed.size) {
+                stack.push(pushed[pushIndex])
+                pushPointer ++
+                if (popped[popIndex] == pushed[pushIndex]) {
+                    stack.pop()
+                    break
+                }
+            }
+        }
+        return stack.isEmpty()
+    }
+
+}
+
+/***
+ * 剑指 Offer 30. 包含min函数的栈
+ * 定义栈的数据结构，请在该类型中实现一个能够得到栈的最小元素的 min 函数在该栈中，调用 min、push 及 pop 的时间复杂度都是 O(1)。
+ */
+
+class MinStack() {
+    var numStack = Stack<Int>()
+    var minStack = Stack<Int>()
+
+    fun push(x: Int) {
+        numStack.push(x)
+        if (minStack.isEmpty()) {
+            minStack.push(x)
+            return
+        }
+        val curMin = minStack.peek()
+        if (x < curMin) {
+            minStack.push(x)
+        } else {
+            minStack.push(curMin)
+        }
+    }
+
+    fun pop() {
+        numStack.pop()
+        minStack.pop()
+    }
+
+    fun top(): Int {
+        return numStack.peek()
+    }
+
+    fun min(): Int {
+        return minStack.peek()
     }
 
 }

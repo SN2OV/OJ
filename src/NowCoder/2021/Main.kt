@@ -62,5 +62,7 @@ fun main(args: Array<String>) {
     // print(nowcoder.myPow(2.0, 5))
 //    print(nowcoder2140.spiralOrder(arrayOf(intArray6, intArray7, intArray8)))
 
-    nowcoder2140.spiralOrder(arrayOf(intArray6, intArray7, intArray8))
+//    nowcoder2140.spiralOrder(arrayOf(intArray6, intArray7, intArray8))
+
+    print(nowcoder2140.validateStackSequences(intArrayOf(1, 2, 3, 4, 5), intArrayOf(4, 3, 5, 1, 2)))
 }
