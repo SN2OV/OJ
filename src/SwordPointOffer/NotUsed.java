@@ -1,4 +1,4 @@
-package NowCoder;
+package SwordPointOffer;
 
 import java.util.ArrayList;
 import java.util.Random;

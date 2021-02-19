@@ -1,4 +1,6 @@
-package NowCoder.`2021`
+package SwordPointOffer.`2021`
+
+import SwordPointOffer.SwordPointOffer40_60
 
 /**
  * Created by fan on 21-1-14
@@ -12,9 +14,9 @@ fun main(args: Array<String>) {
     val intArray3 = intArrayOf(3, 6, 9, 16, 22)
     val intArray4 = intArrayOf(10, 13, 14, 17, 24)
     val intArray5 = intArrayOf(18, 21, 23, 26, 30)
-    val intArray6 = intArrayOf(1, 2)
-    val intArray7 = intArrayOf(5, 6)
-    val intArray8 = intArrayOf(9, 10)
+    val intArray6 = intArrayOf(-2, 1, -3, 4, -1, 2, 1, -5, 4)
+    val intArray7 = intArrayOf(3, 30, 34, 5, 9)
+    val intArray8 = intArrayOf(10, 9)
     val intArray9 = intArrayOf(13, 14, 15, 16)
     val arrays = arrayListOf(intArray, intArray2, intArray3, intArray4, intArray5)
 //    print(nowcoder.findNumberIn2DArray(arrayListOf(), 21))
@@ -51,18 +53,16 @@ fun main(args: Array<String>) {
     treeNode4.right = treeNode6
     treeNodeB.right = treeNode2
     treeNode2.right = treeNode3
-    // print(nowcoder2140.isSymmetric(treeNodeA, treeNodeB))
     val charArray = charArrayOf('a', 'b', 'c', 'e')
     val charArray2 = charArrayOf('s', 'f', 'e', 's')
     val charArray3 = charArrayOf('a', 'd', 'e', 'e')
     val board = arrayOf(charArray, charArray2, charArray3)
-    // print(nowcoder.exist(board, "abceseefs"))
-    // print(nowcoder.hammingWeight2(15))
 
-    // print(nowcoder.myPow(2.0, 5))
-//    print(nowcoder2140.spiralOrder(arrayOf(intArray6, intArray7, intArray8)))
+    // print(Solution34().pathSum(treeNodeA, 6))
 
-//    nowcoder2140.spiralOrder(arrayOf(intArray6, intArray7, intArray8))
+    val sword = SwordPointOffer40_60()
+    // intArray7和intArray8 不能同时满足..
+    sword.quickSort(intArray7)
+    printArray(intArray7)
 
-    print(nowcoder2140.validateStackSequences(intArrayOf(1, 2, 3, 4, 5), intArrayOf(4, 3, 5, 1, 2)))
 }

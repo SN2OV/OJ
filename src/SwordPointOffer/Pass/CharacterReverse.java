@@ -1,4 +1,4 @@
-package NowCoder.Pass;
+package SwordPointOffer.Pass;
 
 import java.util.Scanner;
 

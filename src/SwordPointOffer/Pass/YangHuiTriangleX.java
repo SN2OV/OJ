@@ -1,4 +1,4 @@
-package NowCoder.Pass;
+package SwordPointOffer.Pass;
 
 /**
  * Created by SN2OV on 2017/6/10.

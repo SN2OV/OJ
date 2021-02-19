@@ -1,4 +1,4 @@
-package NowCoder.`2021`
+package base
 
 class ListNode(var `val`: Int) {
     var next: ListNode? = null

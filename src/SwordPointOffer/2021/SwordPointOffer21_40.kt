@@ -1,4 +1,4 @@
-package NowCoder.`2021`
+package SwordPointOffer.`2021`
 
 import java.util.*
 import kotlin.math.min
@@ -302,6 +302,139 @@ class NowCoder21_40 {
         return stack.isEmpty()
     }
 
+    /**
+     * 剑指 Offer 32 - I. 从上到下打印二叉树
+     * 从上到下打印出二叉树的每个节点，同一层的节点按照从左到右的顺序打印。
+     */
+
+    fun levelOrder(root: TreeNode?): IntArray {
+        if (root == null) {
+            return intArrayOf()
+        }
+        val array = mutableListOf<Int>()
+        val queue: Queue<TreeNode> = LinkedList()
+        queue.add(root)
+        while (queue.isNotEmpty()) {
+            val node = queue.peek()
+            array.add(node.`val`)
+            queue.remove()
+            if (node.left?.`val` != null) {
+                queue.add(node.left)
+            }
+            if (node.right?.`val` != null) {
+                queue.add(node.right)
+            }
+        }
+        return array.toIntArray()
+    }
+
+    /**
+     * 剑指 Offer 32 - II. 从上到下打印二叉树 II
+     * 从上到下按层打印二叉树，同一层的节点按从左到右的顺序打印，每一层打印到一行。
+     */
+
+    fun levelOrder2(root: TreeNode?): List<List<Int>> {
+        if (root == null) {
+            return listOf()
+        }
+        val array = mutableListOf<List<Int>>()
+        val queue: Queue<TreeNode> = LinkedList()
+        queue.add(root)
+        var layerCount = 1
+        while (queue.isNotEmpty()) {
+            val layerData = mutableListOf<Int>()
+            layerCount = queue.size
+            while (--layerCount >= 0) {
+                val node = queue.peek()
+                layerData.add(node.`val`)
+                queue.remove()
+                if (node.left?.`val` != null) {
+                    queue.add(node.left)
+                }
+                if (node.right?.`val` != null) {
+                    queue.add(node.right)
+                }
+            }
+            array.add(layerData)
+        }
+        return array
+    }
+
+    /**
+     * 剑指 Offer 32 - III. 从上到下打印二叉树 III
+     *  请实现一个函数按照之字形顺序打印二叉树，即第一行按照从左到右的顺序打印，第二层按照从右到左的顺序打印，第三行再按照从左到右的顺序打印，其他行以此类推。
+     */
+    fun levelOrder3(root: TreeNode?): List<List<Int>> {
+        if (root == null) {
+            return listOf()
+        }
+        val array = mutableListOf<List<Int>>()
+        val queue: Queue<TreeNode> = LinkedList()
+        queue.add(root)
+        var layerCount = 1
+        var layerNo = 1
+        while (queue.isNotEmpty()) {
+            val layerData = LinkedList<Int>()
+            layerCount = queue.size
+            while (--layerCount >= 0) {
+                val node = queue.peek()
+                if (layerNo and 1 == 1) {
+                    layerData.addLast(node.`val`)
+                } else {
+                    // 倒序插入
+                    layerData.addFirst(node.`val`)
+                }
+                queue.remove()
+                if (node.left?.`val` != null) {
+                    queue.add(node.left)
+                }
+                if (node.right?.`val` != null) {
+                    queue.add(node.right)
+                }
+            }
+            array.add(layerData)
+            layerNo++
+        }
+        return array
+    }
+
+    /**
+     * 剑指 Offer 33. 二叉搜索树的后序遍历序列
+     *  输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历结果。如果是则返回 true，否则返回 false。假设输入的数组的任意两个数字都互不相同。
+     */
+    // 超时
+    fun verifyPostorder(postorder: IntArray): Boolean {
+        return verifyPostorder(postorder, 0, postorder.size - 1)
+    }
+
+    fun verifyPostorder(postorder: IntArray, start: Int, end: Int): Boolean {
+        if (start == end || start < 0 || end < 1) {
+            return true
+        }
+        var mid = end - 1
+        while (mid >= 0 && postorder[mid] > postorder[end]) {
+            mid --
+        }
+        mid++
+        for (index in start until mid) {
+            if (postorder[index] > postorder[end]) {
+                return false
+            }
+        }
+        for (index in mid until end) {
+            if (postorder[index] < postorder[end]) {
+                return false
+            }
+        }
+        return verifyPostorder(postorder, start, mid - 1) && verifyPostorder(postorder, mid, end - 1)
+    }
+
+    /**
+     * 剑指 Offer 35. 复杂链表的复制
+     * 请实现 copyRandomList 函数，复制一个复杂链表。在复杂链表中，每个节点除了有一个 next 指针指向下一个节点，还有一个 random 指针指向链表中的任意节点或者 null。
+     */
+    // 无kotlin版本
+
 }
 
 /***
@@ -339,5 +472,35 @@ class MinStack() {
     fun min(): Int {
         return minStack.peek()
     }
+}
 
+/**
+ * 剑指 Offer 34. 二叉树中和为某一值的路径
+ * 输入一棵二叉树和一个整数，打印出二叉树中节点值的和为输入整数的所有路径。从树的根节点开始往下一直到叶节点所经过的节点形成一条路径。
+ */
+
+class Solution34 {
+
+    private val pathList = mutableListOf<List<Int>>()
+    private var path = arrayListOf<Int>()
+
+    fun pathSum(root: TreeNode?, sum: Int): List<List<Int>> {
+        recur(root, sum)
+        return pathList
+    }
+
+    fun recur(root: TreeNode?, sum: Int) {
+        if (root == null) {
+            return
+        }
+        var variableSum = sum
+        path.add(root.`val`)
+        variableSum -= root.`val`
+        if (variableSum == 0 && root.left == null && root.right == null) {
+            pathList.add(LinkedList(path))
+        }
+        recur(root.left, variableSum)
+        recur(root.right, variableSum)
+        path.removeLast()
+    }
 }
