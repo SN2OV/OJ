@@ -101,25 +101,27 @@ public class SwordPointOffer40_60 {
     }
 
     public void quickSort(int arr[]) {
-        quickSort(arr, 0, arr.length - 1);
+        QuickSort1(arr, 0, arr.length - 1);
     }
 
-    // 2 3 1 5 4
+    // 这个是错误的，下面的测试用例无法同时满足
+    //    val intArray7 = intArrayOf(3, 30, 34, 5, 9)
+    //    val intArray8 = intArrayOf(10, 9)
     public void quickSort(int arr[], int start, int end) {
         int s = start + 1;
         int e = end;
         // 这里注意额
-        if (s > e) {
+        if (s >= e) {
             return;
         }
         while (s < e) {
-            while (arr[e] > arr[start] && e != start) {
+            while (arr[e] > arr[start] && s <= e) {
                 e --;
             }
-            while (arr[s] < arr[start] && s != end) {
+            while (arr[s] < arr[start] && s <= e) {
                 s ++;
             }
-            if (s < e) {
+            if (s <= e) {
                 swap(arr, s, e);
             }
         }
@@ -134,4 +136,33 @@ public class SwordPointOffer40_60 {
         arr[e] = temp;
     }
 
+    // https://www.cnblogs.com/nullzx/p/5880191.html
+    public void QuickSort1(int[] A, int L, int R){
+        if(L < R){//递归的边界条件，当 L == R时数组的元素个数为1个
+            int pivot = A[L];//最左边的元素作为中轴，L表示left, R表示right
+            int i = L+1, j = R;
+            //当i == j时，i和j同时指向的元素还没有与中轴元素判断，
+            //小于等于中轴元素，i++,大于中轴元素j--,
+            //当循环结束时，一定有i = j+1, 且i指向的元素大于中轴，j指向的元素小于等于中轴
+            while(i <= j){
+                while(i <= j && A[i] <= pivot){
+                    i++;
+                }
+                while(i <= j && A[j] > pivot){
+                    j--;
+                }
+                //当 i > j 时整个切分过程就应该停止了，不能进行交换操作
+                //这个可以改成 i < j， 这里 i 永远不会等于j， 因为有上述两个循环的作用
+                if(i < j){
+                    swap(A, i, j);
+                    i++;
+                    j--;
+                }
+            }
+            //当循环结束时，j指向的元素是最后一个（从左边算起）小于等于中轴的元素
+            swap(A, L, j);//将中轴元素和j所指的元素互换
+            QuickSort1(A, L, j-1);//递归左半部分
+            QuickSort1(A, j+1, R);//递归右半部分
+        }
+    }
 }

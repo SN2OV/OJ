@@ -501,6 +501,6 @@ class Solution34 {
         }
         recur(root.left, variableSum)
         recur(root.right, variableSum)
-        path.removeLast()
+//        path.removee()
     }
 }

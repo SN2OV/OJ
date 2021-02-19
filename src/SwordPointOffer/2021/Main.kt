@@ -16,7 +16,7 @@ fun main(args: Array<String>) {
     val intArray5 = intArrayOf(18, 21, 23, 26, 30)
     val intArray6 = intArrayOf(-2, 1, -3, 4, -1, 2, 1, -5, 4)
     val intArray7 = intArrayOf(3, 30, 34, 5, 9)
-    val intArray8 = intArrayOf(10, 9)
+    val intArray8 = intArrayOf(9, 10)
     val intArray9 = intArrayOf(13, 14, 15, 16)
     val arrays = arrayListOf(intArray, intArray2, intArray3, intArray4, intArray5)
 //    print(nowcoder.findNumberIn2DArray(arrayListOf(), 21))
@@ -62,7 +62,7 @@ fun main(args: Array<String>) {
 
     val sword = SwordPointOffer40_60()
     // intArray7和intArray8 不能同时满足..
-    sword.quickSort(intArray7)
-    printArray(intArray7)
+    sword.quickSort(intArray9)
+    printArray(intArray9)
 
 }
