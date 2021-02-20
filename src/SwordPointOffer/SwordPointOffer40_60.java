@@ -2,6 +2,7 @@ package SwordPointOffer;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 
 /**
  * Created by fan on 21-2-19
@@ -165,4 +166,215 @@ public class SwordPointOffer40_60 {
             QuickSort1(A, j+1, R);//递归右半部分
         }
     }
+
+    /**
+     * 剑指 Offer 46. 把数字翻译成字符串
+     *
+     * 给定一个数字，我们按照如下规则把它翻译为字符串：0 翻译成 “a” ，1 翻译成 “b”，……，11 翻译成 “l”，……，25 翻译成 “z”。一个数字可能有多个翻译。请编程实现一个函数，用来计算一个数字有多少种不同的翻译方法。
+     * 输入: 12258
+     * 输出: 5
+     * 解释: 12258有5种不同的翻译，分别是"bccfi", "bwfi", "bczi", "mcfi"和"mzi"
+     */
+
+    public class Solution46 {
+
+        int resultMemo[] = new int[32];
+
+        public int translateNum(int num) {
+            // f(n) = f(n - 1) + f(n - 2) a[n-1]a[n] 10-26之间
+            // f(n) = f(n - 1)
+            resultMemo[0] = 1;
+            for (int i = 1; i <= String.valueOf(num).length(); i ++) {
+                translateNum(num, i);
+            }
+            return resultMemo[String.valueOf(num).length()];
+        }
+
+        public void translateNum(int num, int n) {
+            String numStr = String.valueOf(num);
+            int len = numStr.length();
+            if (n > len) {
+                return;
+            }
+            if (n == 1) {
+                resultMemo[1] = 1;
+            } else {
+                int combinedNum = Integer.parseInt(numStr.charAt(n - 2) + "") * 10 + Integer.parseInt(numStr.charAt(n - 1) + "");
+                if (combinedNum > 9 && combinedNum < 26) {
+                    resultMemo[n] = resultMemo[n - 1] + resultMemo[n - 2];
+                } else {
+                    resultMemo[n] = resultMemo[n - 1];
+                }
+            }
+        }
+    }
+
+    /**
+     * 剑指 Offer 47. 礼物的最大价值
+     *
+     *  在一个 m*n 的棋盘的每一格都放有一个礼物，每个礼物都有一定的价值（价值大于 0）。你可以从棋盘的左上角开始拿格子里的礼物，并每次向右或者向下移动一格、直到到达棋盘的右下角。给定一个棋盘及其上面的礼物的价值，请计算你最多能拿到多少价值的礼物？
+     *
+     *  输入:
+     * [
+     *   [1,3,1],
+     *   [1,5,1],
+     *   [4,2,1]
+     * ]
+     * 输出: 12
+     * 解释: 路径 1→3→5→2→1 可以拿到最多价值的礼物
+     *
+     */
+
+
+    public int maxValue(int[][] grid) {
+        int column = grid[0].length;
+        int raw = grid.length;
+        int dp[][] = new int[raw][column];
+        dp[0][0] = grid[0][0];
+        for (int i = 1; i < column; i ++) {
+            dp[0][i] = grid[0][i] + dp[0][i - 1];
+        }
+        for (int j = 1; j < raw; j ++) {
+            dp[j][0] = grid[j][0] + dp[j - 1][0];
+        }
+        for (int i = 1; i < raw; i ++) {
+            for (int j = 1; j < column; j++) {
+                dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]) + grid[i][j];
+            }
+        }
+        return dp[raw - 1][column - 1];
+    }
+
+    /**
+     *  剑指 Offer 48. 最长不含重复字符的子字符串
+     *  请从字符串中找出一个最长的不包含重复字符的子字符串，计算该最长子字符串的长度。
+     *  示例 1:
+     * 输入: "abcabcbb"
+     * 输出: 3
+     * 解释: 因为无重复字符的最长子串是 "abc"，所以其长度为 3。
+     *
+     * 示例 2:
+     * 输入: "bbbbb"
+     * 输出: 1
+     * 解释: 因为无重复字符的最长子串是 "b"，所以其长度为 1。
+     *
+     * 示例 3:
+     * 输入: "pwwkew"
+     * 输出: 3
+     * 解释: 因为无重复字符的最长子串是 "wke"，所以其长度为 3。
+     *      请注意，你的答案必须是 子串 的长度，"pwke" 是一个子序列，不是子串。
+     */
+
+    // f(n) = f(n - 1) + 1  when (n - i) > f (n - 1)
+    //      = n - i
+    public int lengthOfLongestSubstring(String s) {
+        if (s == null || s.length() == 0) {
+            return 0;
+        }
+        int dp[] = new int[s.length()];
+        dp[0] = 1;
+        HashMap<Character, Integer> map = new HashMap<>();
+        map.put(s.charAt(0), 0);
+        int max = dp[0];
+        for (int i = 1; i < s.length(); i ++) {
+            int lastIndex = map.getOrDefault(s.charAt(i), -1);
+            map.put(s.charAt(i), i);
+            if (i - lastIndex > dp[i - 1]) {
+                dp[i] = dp[i - 1] + 1;
+            } else {
+                dp[i] = i - lastIndex;
+            }
+            max = Math.max(dp[i], max);
+        }
+        return max;
+    }
+
+    /**
+     *  剑指 Offer 49. 丑数
+     *  我们把只包含质因子 2、3 和 5 的数称作丑数（Ugly Number）。求按从小到大的顺序的第 n 个丑数。
+     *   输入: n = 10
+     *   输出: 12
+     *   解释: 1, 2, 3, 4, 5, 6, 8, 9, 10, 12 是前 10 个丑数。
+     *    1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16
+     */
+    public int nthUglyNumber(int n) {
+        // f(n + 1) = min(f(a) * 2, f(b) * 3, f(c) * 5)
+        // f(a)为首个乘以2等于f(n)的丑数
+
+        int dp[] = new int[n + 1];
+        dp[1] = 1;
+        int a = 1;
+        int b = 1;
+        int c = 1;
+        for (int i = 2; i <= n; i ++) {
+            int n1 = dp[a] * 2;
+            int n2 = dp[b] * 3;
+            int n3 = dp[c] * 5;
+            dp[i] = Math.min(Math.min(n1, n2), n3);
+            if (dp[i] == n1) {
+                a++;
+            }
+            if (dp[i] == n2) {
+                b++;
+            }
+            if (dp[i] == n3) {
+                c++;
+            }
+        }
+        return dp[n];
+    }
+
+
+    /**
+     * 剑指 Offer 50. 第一个只出现一次的字符
+     * 在字符串 s 中找出第一个只出现一次的字符。如果没有，返回一个单空格。 s 只包含小写字母。
+     *
+     * 示例:
+     *
+     * s = "abaccdeff"
+     * 返回 "b"
+     *
+     * s = ""
+     * 返回 " "
+     *
+     */
+
+    public char firstUniqChar(String s) {
+        if (s.length() == 0) {
+            return ' ';
+        }
+        int arr[] = new int[255];
+        for (int i = 0; i < s.length(); i ++) {
+            char ch = s.charAt(i);
+            arr[ch] ++;
+        }
+        for (int i = 0; i < s.length(); i ++) {
+            if (arr[s.charAt(i)] == 1) {
+                return s.charAt(i);
+            }
+        }
+        return ' ';
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
